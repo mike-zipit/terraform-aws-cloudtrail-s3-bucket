@@ -7,7 +7,6 @@ This is useful if an organization uses a number of separate AWS accounts to isol
 In this case, you create your ALB or ELB in the production environment (Production AWS account),
 while the S3 bucket to store the load-balancer logs is created in the Audit AWS account, restricting access to the logs only to the users/groups from the Audit account.
 
-
 The module supports the following:
 
 1. Forced [server-side encryption](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingServerSideEncryption.html) at rest for the S3 bucket
@@ -27,28 +26,29 @@ module "s3_bucket" {
 }
 ```
 
-## Variables
+## Inputs
 
-|  Name             |  Default             |  Description                                                                  | Required |
-|:------------------|:--------------------:|:------------------------------------------------------------------------------|:--------:|
-| `namespace`       | ``                   | Namespace (e.g. `cp` or `cloudposse`)                                         | Yes      |
-| `stage`           | ``                   | Stage (e.g. `prod`, `dev`, `staging`)                                         | Yes      |
-| `name`            | ``                   | Name  (e.g. `cluster` or `app`)                                               | Yes      |
-| `region`          | `us-east-1`          | AWS Region for S3 bucket                                                      | Yes      |
-| `attributes`      | `[]`                 | Additional attributes (e.g. `logs`)                                           | No       |
-| `tags`            | `{}`                 | Additional tags  (e.g. `map("BusinessUnit","XYZ")`                            | No       |
-| `delimiter`       | `-`                  | Delimiter to be used between `namespace`, `stage`, `name` and `attributes`    | No       |
-| `acl`             | `log-delivery-write` | Canned ACL to apply to the S3 bucket                                          | No       |
-| `force_destroy`   | `false`              | A boolean that indicates the bucket can be destroyed even if it contains objects. These objects are not recoverable   | No       |
-
+| Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| acl | Canned ACL to apply to the S3 bucket | string | `log-delivery-write` | no |
+| attributes | Additional attributes (e.g. `logs`) | list | `<list>` | no |
+| delimiter | Delimiter to be used between `namespace`, `stage`, `name` and `attributes` | string | `-` | no |
+| force_destroy | A boolean that indicates the bucket can be destroyed even if it contains objects. These objects are not recoverable | string | `false` | no |
+| name | Name  (e.g. `app` or `cluster`) | string | - | yes |
+| namespace | Namespace (e.g. `cp` or `cloudposse`) | string | - | yes |
+| prefix | The S3 bucket prefix for the AWSLogs | string | `lb` | no |
+| region | AWS Region for S3 bucket | string | `us-east-1` | no |
+| stage | Stage (e.g. `prod`, `dev`, `staging`) | string | - | yes |
+| tags | Additional tags (e.g. map(`BusinessUnit`,`XYZ`) | map | `<map>` | no |
 
 ## Outputs
 
-| Name                  | Description           |
-|:----------------------|:----------------------|
-| `bucket_domain_name`  | FQDN of bucket        |
-| `bucket_id`           | Bucket ID             |
-| `bucket_arn`          | Bucket ARN            |
+| Name | Description |
+|------|-------------|
+| bucket_arn |  |
+| bucket_domain_name |  |
+| bucket_id |  |
+| bucket_prefix |  |
 
 
 

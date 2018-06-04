@@ -23,7 +23,9 @@ module "s3_bucket" {
   delimiter              = "${var.delimiter}"
   attributes             = "${var.attributes}"
   tags                   = "${var.tags}"
-  policy                 = <<POLICY
+  prefix                 = "${var.prefix}"
+
+  policy = <<POLICY
 {
   "Id": "Policy",
   "Version": "2012-10-17",
@@ -33,7 +35,7 @@ module "s3_bucket" {
         "s3:PutObject"
       ],
       "Effect": "Allow",
-      "Resource": "${var.namespace}-${var.stage}-${var.name}/AWSLogs/*",
+      "Resource": "arn:aws:s3:::${module.label.id}/${var.prefix}/AWSLogs/*",
       "Principal": {
         "AWS": [
           "${data.aws_elb_service_account.main.arn}"

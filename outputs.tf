@@ -9,3 +9,7 @@ output "bucket_id" {
 output "bucket_arn" {
   value = "${module.s3_bucket.bucket_arn}"
 }
+
+output "bucket_prefix" {
+  value = "${module.s3_bucket.prefix}"
+}
