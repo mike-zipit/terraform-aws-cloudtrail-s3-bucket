@@ -1,3 +1,5 @@
+data "aws_elb_service_account" "main" {}
+
 module "label" {
   source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.3.3"
   namespace  = "${var.namespace}"
@@ -50,6 +52,23 @@ data "aws_iam_policy_document" "default" {
         "bucket-owner-full-control",
       ]
     }
+  }
+
+  statement = {
+    sid = "AWSLoadBalancerSupport"
+
+    principals {
+      type        = "AWS"
+      identifiers = ["${data.aws_elb_service_account.main.arn}"]
+    }
+
+    actions = [
+      "s3:PutObject",
+    ]
+
+    resources = [
+      "arn:aws:s3:::${module.label.id}/*",
+    ]
   }
 }
 
