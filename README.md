@@ -1,11 +1,11 @@
-# terraform-aws-cloudtrail-s3-bucket [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-cloudtrail-s3-bucket.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-cloudtrail-s3-bucket)
+# terraform-aws-lb-s3-bucket [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-lb-s3-bucket.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-lb-s3-bucket)
 
-Terraform module to provision an S3 bucket with built in policy to allow [CloudTrail](https://aws.amazon.com/cloudtrail/) [logs](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-management-and-data-events-with-cloudtrail.html).
+Terraform module to provision an S3 bucket with built in policy to allow [Load Balancing](https://aws.amazon.com/documentation/elastic-load-balancing/) [logs](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html).
 
 This is useful if an organization uses a number of separate AWS accounts to isolate the Audit environment from other environments (production, staging, development).
 
-In this case, you create CloudTrail in the production environment (Production AWS account),
-while the S3 bucket to store the CloudTrail logs is created in the Audit AWS account, restricting access to the logs only to the users/groups from the Audit account.
+In this case, you create your ALB or ELB in the production environment (Production AWS account),
+while the S3 bucket to store the load-balancer logs is created in the Audit AWS account, restricting access to the logs only to the users/groups from the Audit account.
 
 
 The module supports the following:
@@ -19,7 +19,7 @@ The module supports the following:
 
 ```hcl
 module "s3_bucket" {
-  source    = "git::https://github.com/cloudposse/terraform-aws-cloudtrail-s3-bucket.git?ref=master"
+  source    = "git::https://github.com/cloudposse/terraform-aws-lb-s3-bucket.git?ref=master"
   namespace = "cp"
   stage     = "prod"
   name      = "cluster"
@@ -56,18 +56,18 @@ module "s3_bucket" {
 
 **Got a question?**
 
-File a GitHub [issue](https://github.com/cloudposse/terraform-aws-cloudtrail-s3-bucket/issues), send us an [email](mailto:hello@cloudposse.com) or reach out to us on [Gitter](https://gitter.im/cloudposse/).
+File a GitHub [issue](https://github.com/cloudposse/terraform-aws-lb-s3-bucket/issues), send us an [email](mailto:hello@cloudposse.com) or reach out to us on [Gitter](https://gitter.im/cloudposse/).
 
 
 ## Contributing
 
 ### Bug Reports & Feature Requests
 
-Please use the [issue tracker](https://github.com/cloudposse/terraform-aws-cloudtrail-s3-bucket/issues) to report any bugs or file feature requests.
+Please use the [issue tracker](https://github.com/cloudposse/terraform-aws-lb-s3-bucket/issues) to report any bugs or file feature requests.
 
 ### Developing
 
-If you are interested in being a contributor and want to get involved in developing `terraform-aws-cloudtrail-s3-bucket`, we would love to hear from you! Shoot us an [email](mailto:hello@cloudposse.com).
+If you are interested in being a contributor and want to get involved in developing `terraform-aws-lb-s3-bucket`, we would love to hear from you! Shoot us an [email](mailto:hello@cloudposse.com).
 
 In general, PRs are welcome. We follow the typical "fork-and-pull" Git workflow.
 
@@ -106,7 +106,7 @@ See [LICENSE](LICENSE) for full details.
 
 ## About
 
-`terraform-aws-cloudtrail-s3-bucket` is maintained and funded by [Cloud Posse, LLC][website].
+`terraform-aws-lb-s3-bucket` is maintained and funded by [Cloud Posse, LLC][website].
 
 ![Cloud Posse](https://cloudposse.com/logo-300x69.png)
 
