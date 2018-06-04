@@ -10,50 +10,7 @@ module "label" {
   tags       = "${var.tags}"
 }
 
-data "aws_iam_policy_document" "default" {
-  statement {
-    sid = "AWSCloudTrailAclCheck"
-
-    principals {
-      type        = "Service"
-      identifiers = ["cloudtrail.amazonaws.com"]
-    }
-
-    actions = [
-      "s3:GetBucketAcl",
-    ]
-
-    resources = [
-      "arn:aws:s3:::${module.label.id}",
-    ]
-  }
-
-  statement {
-    sid = "AWSCloudTrailWrite"
-
-    principals {
-      type        = "Service"
-      identifiers = ["cloudtrail.amazonaws.com"]
-    }
-
-    actions = [
-      "s3:PutObject",
-    ]
-
-    resources = [
-      "arn:aws:s3:::${module.label.id}/*",
-    ]
-
-    condition {
-      test     = "StringEquals"
-      variable = "s3:x-amz-acl"
-
-      values = [
-        "bucket-owner-full-control",
-      ]
-    }
-  }
-
+data "aws_lb_policy_document" "default" {
   statement = {
     sid = "AWSLoadBalancerSupport"
 
@@ -79,7 +36,7 @@ module "s3_bucket" {
   name                   = "${var.name}"
   region                 = "${var.region}"
   acl                    = "${var.acl}"
-  policy                 = "${data.aws_iam_policy_document.default.json}"
+  policy                 = "${data.c.default.json}"
   force_destroy          = "${var.force_destroy}"
   versioning_enabled     = "true"
   lifecycle_rule_enabled = "false"
