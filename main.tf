@@ -10,25 +10,6 @@ module "label" {
   tags       = "${var.tags}"
 }
 
-data "aws_lb_policy_document" "default" {
-  statement = {
-    sid = "AWSLoadBalancerSupport"
-
-    principals {
-      type        = "AWS"
-      identifiers = ["${data.aws_elb_service_account.main.arn}"]
-    }
-
-    actions = [
-      "s3:PutObject",
-    ]
-
-    resources = [
-      "arn:aws:s3:::${module.label.id}/*",
-    ]
-  }
-}
-
 module "s3_bucket" {
   source                 = "git::https://github.com/cloudposse/terraform-aws-s3-log-storage.git?ref=tags/0.2.0"
   namespace              = "${var.namespace}"
@@ -36,11 +17,30 @@ module "s3_bucket" {
   name                   = "${var.name}"
   region                 = "${var.region}"
   acl                    = "${var.acl}"
-  policy                 = "${data.aws_lb_policy_document.default.json}"
   force_destroy          = "${var.force_destroy}"
   versioning_enabled     = "true"
   lifecycle_rule_enabled = "false"
   delimiter              = "${var.delimiter}"
   attributes             = "${var.attributes}"
   tags                   = "${var.tags}"
+  policy                 = <<POLICY
+{
+  "Id": "Policy",
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "s3:PutObject"
+      ],
+      "Effect": "Allow",
+      "Resource": "${var.namespace}-${var.stage}-${var.name}/AWSLogs/*",
+      "Principal": {
+        "AWS": [
+          "${data.aws_elb_service_account.main.arn}"
+        ]
+      }
+    }
+  ]
+}
+POLICY
 }
